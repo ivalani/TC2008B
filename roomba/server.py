@@ -3,7 +3,7 @@ from mesa.visualization.modules import CanvasGrid, ChartModule, PieChartModule
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.UserParam import UserSettableParameter
 
-COLORS = {'Clean': "#00FFFF", 'Dirty': "#964B00"}
+COLORS = {'Clean': "blue", 'Dirty': "black"}
 
 
 def roombaPortrayal(agent):
@@ -23,10 +23,10 @@ def roombaPortrayal(agent):
     if (isinstance(agent, Roomba)):
         portrayal = {
             "Shape": "circle",
-            "Color": "brown",
+            "Color": "red",
             "Layer": 1,
             "Filled": "true",
-            "r": 0.5
+            "r": 0.7
         }
 
     if (isinstance(agent, ObstacleAgent)):
@@ -35,16 +35,13 @@ def roombaPortrayal(agent):
             "Color": "grey",
             "Layer": 2,
             "Filled": "true",
-            "r": 0.2
+            "r": 0.1
         }
     return portrayal
 
 
 grid = CanvasGrid(roombaPortrayal, 10, 10, 500, 500)
 
-moves_chart = ChartModule(
-    [{"Label": "Moves", "Color": "#000000"}]
-)
 floor_chart = ChartModule(
     [{"Label": label, "Color": color} for (label, color) in COLORS.items()]
 )
@@ -54,11 +51,11 @@ floor_pie_chart = PieChartModule(
 )
 
 server = ModularServer(RoombaModel,
-                       [grid, moves_chart, floor_pie_chart, floor_chart],
+                       [grid, floor_pie_chart, floor_chart],
                        "Roomba Cleaning",
-                       {"N": UserSettableParameter("number", "Roomba Number: ", value=4), "ancho": 10, "alto": 10,
-                        "percentage": UserSettableParameter("slider", "Floor Percentage", 0.6, 0.01, 1.0, 0.1),
-                        "maxTime": UserSettableParameter("number", "Maximum number of steps", value=1000)
+                       {"N": UserSettableParameter("number", "Roomba Number: ", value=5), "ancho": 10, "alto": 10,
+                        "percentage": UserSettableParameter("slider", "Floor Percentage", 0.5, 0.01, 1.0, 0.1),
+                        "maxTime": UserSettableParameter("number", "Maximum number of steps", value=200)
                         })
 
 server.port = 8521
